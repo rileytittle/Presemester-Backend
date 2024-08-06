@@ -1,9 +1,85 @@
 import express from "express";
-
+import { Volunteer } from "../models/volunteer.model";
+import { AuthChecker } from "../utils/auth.utils";
 let app = express.Router();
 
-app.get("/", (req, res) => {
-	res.send("Hi Mom from vol router!");
+let volunteerList: Volunteer[] = [
+	{
+		firstName: "Riley",
+		lastName: "Tittle",
+		userName: "rtittle",
+		password: "pass123",
+		preferredCenters: ["Kitchen", "Dining Room", "Cleaning"],
+		skillsOrInterests: ["OOP", "VSCode"],
+		availabilityTimes: ["8:30-4:30", "", "8:30-4:30", "", "", "", ""],
+		address: "1234 Address Cir, Jax FL 33333",
+		homePhoneNumber: undefined,
+		workPhoneNumber: undefined,
+		cellPhoneNumber: 9041234567,
+		email: "fakeemail@email.com",
+		educationalBackground: "Most of a bachelor's degree",
+		currentLicenses: ["Driver's license", "Florida food safe certified"],
+		emergencyContactName: "Mom",
+		emergencyContactHomePhone: 9041234567,
+		emergencyContactWorkPhone: undefined,
+		emergencyContactEmail: "momfakeemail@email.com",
+		emergencyContactAddress: "1234 Nunya Ct, Jax FL 11111",
+		driversLicenseOnFile: true,
+		ssnOnFile: true,
+		approvalStatus: true,
+	},
+	{
+		firstName: "Riley",
+		lastName: "Tittle",
+		userName: "rtittle",
+		password: "pass123",
+		preferredCenters: ["Kitchen", "Dining Room", "Cleaning"],
+		skillsOrInterests: ["OOP", "VSCode"],
+		availabilityTimes: ["8:30-4:30", "", "8:30-4:30", "", "", "", ""],
+		address: "1234 Address Cir, Jax FL 33333",
+		homePhoneNumber: undefined,
+		workPhoneNumber: undefined,
+		cellPhoneNumber: 9041234567,
+		email: "fakeemail@email.com",
+		educationalBackground: "Most of a bachelor's degree",
+		currentLicenses: ["Driver's license", "Florida food safe certified"],
+		emergencyContactName: "Mom",
+		emergencyContactHomePhone: 9041234567,
+		emergencyContactWorkPhone: undefined,
+		emergencyContactEmail: "momfakeemail@email.com",
+		emergencyContactAddress: "1234 Nunya Ct, Jax FL 11111",
+		driversLicenseOnFile: true,
+		ssnOnFile: true,
+		approvalStatus: true,
+	},
+	{
+		firstName: "Riley",
+		lastName: "Tittle",
+		userName: "rtittle",
+		password: "pass123",
+		preferredCenters: ["Kitchen", "Dining Room", "Cleaning"],
+		skillsOrInterests: ["OOP", "VSCode"],
+		availabilityTimes: ["8:30-4:30", "", "8:30-4:30", "", "", "", ""],
+		address: "1234 Address Cir, Jax FL 33333",
+		homePhoneNumber: undefined,
+		workPhoneNumber: undefined,
+		cellPhoneNumber: 9041234567,
+		email: "fakeemail@email.com",
+		educationalBackground: "Most of a bachelor's degree",
+		currentLicenses: ["Driver's license", "Florida food safe certified"],
+		emergencyContactName: "Mom",
+		emergencyContactHomePhone: 9041234567,
+		emergencyContactWorkPhone: undefined,
+		emergencyContactEmail: "momfakeemail@email.com",
+		emergencyContactAddress: "1234 Nunya Ct, Jax FL 11111",
+		driversLicenseOnFile: true,
+		ssnOnFile: true,
+		approvalStatus: true,
+	},
+];
+
+app.get("/", AuthChecker, (req, res) => {
+	res.status(200).send(volunteerList);
 });
 
 export { app };

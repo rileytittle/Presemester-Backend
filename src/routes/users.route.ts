@@ -3,7 +3,15 @@ import { User } from "../models/users.model";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 const saltRounds = 10;
-let adminList: User[] = [];
+//for the pre-semester project, we created a user and stored the data in the app.
+//We obviously wouldn't do this for the actual app, we just needed some data without
+//a database
+let adminList: User[] = [
+	{
+		userName: "adminUser",
+		password: "pass123",
+	},
+];
 
 let app = Router();
 
@@ -43,18 +51,4 @@ app.post("/login", (req, res, next) => {
 	} else {
 		res.status(401).send({ message: "Invalid username or password" });
 	}
-});
-
-app.post("/", (req, res, next) => {
-	let newUser = new User();
-	bcrypt.genSalt(saltRounds, (err, salt) => {
-		bcrypt.hash(req.body.password, salt, (err, hash) => {
-			newUser.userName = req.body.username;
-			newUser.password = hash;
-			adminList.push(newUser);
-			res.send(newUser);
-			res.status(201).send(newUser);
-		});
-	});
-	//Object.assign(newUser, req.body);
 });
