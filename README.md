@@ -15,6 +15,8 @@ nodemon
 
 #Results
 
-You won't actually be able to see most of the routes returning anything,
-so you can use postman to make requests to the server running on port 3000
-to see what the code returns at given api points.
+If you want to see what some of the "get" routes are doing, type the url
+into your browser and you will get the results.
+For example, to get the response from the get all volunteers route, type
+localhost:3000/volunteers
+into your browser, and you will get a json response with all volunteers.
