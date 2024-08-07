@@ -29,9 +29,9 @@ let volunteerList: Volunteer[] = [
 		approvalStatus: true,
 	},
 	{
-		firstName: "Riley",
-		lastName: "Tittle",
-		userName: "rtittle",
+		firstName: "Hayden",
+		lastName: "something",
+		userName: "hsomething",
 		password: "pass123",
 		preferredCenters: ["Kitchen", "Dining Room", "Cleaning"],
 		skillsOrInterests: ["OOP", "VSCode"],
@@ -53,9 +53,9 @@ let volunteerList: Volunteer[] = [
 		approvalStatus: true,
 	},
 	{
-		firstName: "Riley",
-		lastName: "Tittle",
-		userName: "rtittle",
+		firstName: "Corey",
+		lastName: "something",
+		userName: "csomething",
 		password: "pass123",
 		preferredCenters: ["Kitchen", "Dining Room", "Cleaning"],
 		skillsOrInterests: ["OOP", "VSCode"],
@@ -77,6 +77,91 @@ let volunteerList: Volunteer[] = [
 		approvalStatus: true,
 	},
 ];
+
+app.post("/", AuthChecker, (req, res) => {
+	if (
+		req.body.firstName &&
+		req.body.lastName &&
+		req.body.username &&
+		req.body.password &&
+		req.body.preferredCenters &&
+		req.body.skillsOrInterests &&
+		req.body.availabilityTimes &&
+		req.body.address &&
+		req.body.cellPhoneNumber &&
+		req.body.email &&
+		req.body.emergencyContactName &&
+		req.body.emergencyContactAddress &&
+		req.body.emergencyContactEmail &&
+		req.body.emergencyContactHomePhone
+	) {
+		let firstName = req.body.firstName;
+		let lastName = req.body.lastName;
+		let userName = req.body.userName;
+		let password = req.body.password;
+		let preferredCenters = req.body.preferredCenters;
+		let skillsOrInterests = req.body.skillsOrInterests;
+		let availabilityTimes = req.body.availabilityTimes;
+		let address = req.body.address;
+		let homePhoneNumber = req.body.homePhoneNumber;
+		let workPhoneNumber = req.body.workPhoneNumber;
+		let cellPhoneNumber = req.body.cellPhoneNumber;
+		let email = req.body.email;
+		let educationalBackground = req.body.educationalBackground;
+		let currentLicenses = req.body.currentLicenses;
+		let emergencyContactName = req.body.emergencyContactName;
+		let emergencyContactHomePhone = req.body.emergencyContactHomePhone;
+		let emergencyContactWorkPhone = req.body.emergencyContactWorkPhone;
+		let emergencyContactEmail = req.body.emergencyContactEmail;
+		let emergencyContactAddress = req.body.emergencyContactAddress;
+		let driversLicenseOnFile = req.body.driversLicenseOnFile;
+		let ssnOnFile = req.body.ssnOnFile;
+		let approvalStatus = req.body.approvalStatus;
+		let newVolunteer = new Volunteer(
+			firstName,
+			lastName,
+			userName,
+			password,
+			preferredCenters,
+			skillsOrInterests,
+			availabilityTimes,
+			address,
+			email,
+			educationalBackground,
+			currentLicenses,
+			emergencyContactName,
+			emergencyContactEmail,
+			emergencyContactAddress,
+			driversLicenseOnFile,
+			ssnOnFile,
+			homePhoneNumber,
+			workPhoneNumber,
+			cellPhoneNumber,
+			emergencyContactHomePhone,
+			emergencyContactWorkPhone,
+			approvalStatus
+		);
+		volunteerList.push(newVolunteer);
+		res.status(200).send({ message: "New volunteer created" });
+	} else {
+		res.status(400).send({ message: "missing required attributes" });
+	}
+});
+
+app.get("/:volunteerUserName", AuthChecker, (req, res) => {
+	let foundVolunteer: Volunteer | undefined = undefined;
+	for (let volunteer of volunteerList) {
+		if (volunteer.userName === req.params.volunteerUserName) {
+			foundVolunteer = volunteer;
+			break;
+		}
+	}
+	if (foundVolunteer) {
+		res.status(200).send(foundVolunteer);
+	} else {
+		res.status(404).send({ message: "Volunteer not found" });
+	}
+});
 
 app.get("/", AuthChecker, (req, res) => {
 	res.status(200).send(volunteerList);
