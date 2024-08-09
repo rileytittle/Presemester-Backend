@@ -28,7 +28,11 @@ let AuthChecker = (req, res, next) => {
             res.status(401).send({ message: "No authorization header" });
         }
     }
-    else
+    else if (req.originalUrl === "/users/login") {
         next();
+    }
+    else {
+        res.status(403).send({ message: "Unauthorized" });
+    }
 };
 exports.AuthChecker = AuthChecker;

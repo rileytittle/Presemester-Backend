@@ -6,12 +6,7 @@ const saltRounds = 10;
 //for the pre-semester project, we created a user and stored the data in the app.
 //We obviously wouldn't do this for the actual app, we just needed some data without
 //a database
-let adminList: User[] = [
-	{
-		userName: "adminUser",
-		password: "pass123",
-	},
-];
+let adminList: User[] = [];
 
 let app = Router();
 
@@ -36,19 +31,42 @@ app.post("/login", (req, res, next) => {
 					let token = jwt.sign(
 						{
 							username: foundUser?.userName,
-							exp: Math.floor(Date.now() / 1000) + 60,
+							admin: true,
 						},
-						"SECRETKEY"
+						"PRESEMESTER"
 					);
 					res.status(200).send({ token: token });
 				} else {
 					res.status(401).send({
-						message: "Invalid username or password",
+						message: "Invalid username or password 1",
 					});
 				}
 			});
 		}
 	} else {
-		res.status(401).send({ message: "Invalid username or password" });
+		res.status(401).send({ message: "Invalid username or password 2" });
 	}
 });
+app.post("/", (req, res, next) => {
+	//console.log("Actually post a user")
+	let userNameValid = true;
+	for (let u of adminList) {
+		if (u.userName == req.body.userName) {
+			userNameValid = false;
+		}
+	}
+	if (userNameValid) {
+		let newUser = new User();
+		bcrypt.genSalt(saltRounds, (err, salt) => {
+			bcrypt.hash(req.body.password, salt, (err, hash) => {
+				newUser.userName = req.body.userName;
+				newUser.password = hash;
+				adminList.push(newUser);
+				res.status(201).send({ username: newUser.userName });
+			});
+		});
+	} else {
+		res.status(400).send({ status: 400, message: "Email already in use" });
+	}
+});
+export { app };

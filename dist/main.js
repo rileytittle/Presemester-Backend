@@ -6,10 +6,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const volunteers_route_1 = require("./routes/volunteers.route");
 const opportunities_route_1 = require("./routes/opportunities.route");
+const users_route_1 = require("./routes/users.route");
 let app = (0, express_1.default)();
 app.use(express_1.default.json());
 app.use("/volunteers", volunteers_route_1.app);
 app.use("/opportunities", opportunities_route_1.app);
+app.use("/users", users_route_1.app);
 app.get("/", (req, res) => {
     res.send("Hello mom!");
 });

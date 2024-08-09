@@ -82,7 +82,7 @@ app.post("/", AuthChecker, (req, res) => {
 	if (
 		req.body.firstName &&
 		req.body.lastName &&
-		req.body.username &&
+		req.body.userName &&
 		req.body.password &&
 		req.body.preferredCenters &&
 		req.body.skillsOrInterests &&
