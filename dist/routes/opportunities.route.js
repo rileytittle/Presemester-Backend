@@ -89,6 +89,51 @@ let opportunitiesList = [
             }]
     }
 ];
+//delete opportunity with the provided name
+app.delete("/:opportunityName", auth_utils_1.AuthChecker, (req, res) => {
+    let newList = [];
+    for (let opportunity of opportunitiesList) {
+        if (opportunity.name === req.params.opportunityName) {
+            newList = opportunitiesList.filter((opportunity) => opportunity.name !== req.params.opportunityName);
+            opportunitiesList = newList;
+            break;
+        }
+    }
+    if (newList.length === 0) {
+        res.status(400).send({ message: "Opportunity Not Found" });
+    }
+    else {
+        res.status(200).send({ message: "Opportunity Deleted" });
+    }
+});
+//Edit Opportunity
+app.patch(':/opportunityName', auth_utils_1.AuthChecker, (req, res) => {
+    let foundOpportunity = undefined;
+    for (let opportunity of opportunitiesList) {
+        if (opportunity.name = req.params.opportunityName) {
+            foundOpportunity = opportunity;
+            break;
+        }
+    }
+    if (foundOpportunity) {
+        if (req.body.name) {
+            foundOpportunity.name = req.body.name;
+        }
+        if (req.body.center) {
+            foundOpportunity.center = req.body.name;
+        }
+        if (req.body.date) {
+            foundOpportunity.date = req.body.date;
+        }
+        if (req.body.info) {
+            foundOpportunity.info = req.body.info;
+        }
+        res.status(200).send({ message: 'Opportunity Updated Successfully' });
+    }
+    else {
+        res.status(400).send({ message: 'Opportunity Not Found' });
+    }
+});
 //Create a new opportunity
 app.post('/', auth_utils_1.AuthChecker, (req, res) => {
     if (req.body.name &&
@@ -103,6 +148,22 @@ app.post('/', auth_utils_1.AuthChecker, (req, res) => {
     }
     else {
         res.status(400).send({ message: 'Missing Required Attributes' });
+    }
+});
+//search opportunites
+app.get("/:searchTerm", auth_utils_1.AuthChecker, (req, res) => {
+    let foundOpportunities = [];
+    //returning any opportunites with the search term in their name
+    for (let opportunity of opportunitiesList) {
+        if (opportunity.name.includes(req.params.searchTerm)) {
+            foundOpportunities.push(opportunity);
+        }
+    }
+    if (foundOpportunities.length >= 1) {
+        res.status(200).send(foundOpportunities);
+    }
+    else {
+        res.status(404).send({ message: "No Matching Opportunites Found" });
     }
 });
 //Retrieve all Opportunities
